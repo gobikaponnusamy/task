@@ -16,6 +16,8 @@ jobs:
 
     - name: Run script to update readme
       run: |
+        #!/bin/bash
+
         OUTPUT_FOLDER=output
         README_FILE=$OUTPUT_FOLDER/readme.txt
 
@@ -34,14 +36,12 @@ jobs:
 
         echo "PR information appended to readme.txt."
 
-        # Create and checkout a new branch
-        git checkout -b update-readme-branch
-
-        # Commit changes
+        # Commit and push changes
+        git config --global user.name "gobikaponnusamy"
+        git config --global user.email "gobikaponnusamy2003@gmail.com"
         git add $OUTPUT_FOLDER
         git commit -m "Update readme with PR information"
+        git push origin HEAD:main
 
-        # Push changes to the new branch
-        git push origin update-readme-branch
 
       working-directory: ${{ github.workspace }}
