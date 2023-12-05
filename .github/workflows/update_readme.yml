@@ -41,7 +41,11 @@ jobs:
         git config --global user.email "gobikaponnusamy2003@gmail.com"
         git add $OUTPUT_FOLDER
         git commit -m "Update readme with PR information"
-        git push origin HEAD:main
 
+        # Use the GH_TOKEN secret for authentication
+        git push https://$GH_TOKEN@github.com/gobikaponnusamy/task.git HEAD:main
+
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       working-directory: ${{ github.workspace }}
