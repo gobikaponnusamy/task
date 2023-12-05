@@ -1,0 +1,46 @@
+name: Update Readme on PR
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  update_readme:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Run script to update readme
+      run: |
+        #!/bin/bash
+
+        OUTPUT_FOLDER=output
+        README_FILE=$OUTPUT_FOLDER/readme.txt
+
+        # Create output folder if it doesn't exist
+        mkdir -p $OUTPUT_FOLDER
+
+        # Get the PR title and description
+        PR_TITLE=$(git log -1 --pretty=%s)
+        PR_DESCRIPTION=$(git log -1 --pretty=%b)
+
+        # Append PR information to readme.txt
+        echo "### PR Title: $PR_TITLE" >> $README_FILE
+        echo "PR Description:" >> $README_FILE
+        echo "$PR_DESCRIPTION" >> $README_FILE
+        echo "------------------------------" >> $README_FILE
+
+        echo "PR information appended to readme.txt."
+
+        # Commit and push changes
+        git config --global user.name "gobikaponnusamy"
+        git config --global user.email "gobikaponnusamy2003@gmail.com"
+        git add $OUTPUT_FOLDER
+        git commit -m "Update readme with PR information"
+        git push
+
+      working-directory: ${{ github.workspace }}
